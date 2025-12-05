@@ -1,1 +1,660 @@
 # one-web
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>茶说九华 - 九华山黄精茶官方正品</title>
+    <!-- 基础样式：实现圆滑UI+亮眼配色 -->
+    <style>
+        /* 全局重置 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+        }
+
+        /* 核心配色体系 */
+        :root {
+            --primary: #2A9D8F; /* 九华青绿（主色，眼前一亮的自然绿） */
+            --secondary: #E9C46A; /* 黄精暖黄（辅助色，贴合产品特性） */
+            --bg-light: #F8F9FA; /* 浅云灰（背景） */
+            --text-dark: #264653; /* 墨山灰（主文字） */
+            --text-gray: #6C757D; /* 浅灰（副文字） */
+            --white: #FFFFFF; /* 纯白 */
+            --radius-base: 12px; /* 基础圆角（圆滑UI核心） */
+            --radius-lg: 24px; /* 大圆角 */
+            --shadow-soft: 0 4px 12px rgba(0, 0, 0, 0.08); /* 柔和阴影 */
+            --shadow-hover: 0 8px 20px rgba(0, 0, 0, 0.12); /*  hover阴影 */
+            --transition: all 0.3s ease; /* 统一过渡动画 */
+        }
+
+        body {
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        /* 通用组件样式 */
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 24px;
+            background-color: var(--secondary);
+            color: var(--text-dark);
+            border: none;
+            border-radius: var(--radius-base);
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            background-color: #D4B15A;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-soft);
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: var(--white);
+        }
+
+        .btn-primary:hover {
+            background-color: #248277;
+        }
+
+        .section {
+            padding: 80px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 60px;
+            color: var(--text-dark);
+            position: relative;
+        }
+
+        .section-title::after {
+            content: "";
+            display: block;
+            width: 80px;
+            height: 4px;
+            background-color: var(--primary);
+            margin: 16px auto 0;
+            border-radius: 2px;
+        }
+
+        /* 导航栏 */
+        .header {
+            background-color: var(--white);
+            box-shadow: var(--shadow-soft);
+            position: sticky;
+            top: 0;
+            z-index: 999;
+            border-bottom-left-radius: var(--radius-lg);
+            border-bottom-right-radius: var(--radius-lg);
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 80px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+        }
+
+        .logo-text {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 40px;
+        }
+
+        .nav-link {
+            color: var(--text-dark);
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 500;
+            transition: var(--transition);
+            padding: 8px 0;
+            border-bottom: 2px solid transparent;
+        }
+
+        .nav-link:hover {
+            color: var(--primary);
+            border-bottom: 2px solid var(--primary);
+        }
+
+        /* 轮播图 */
+        .banner {
+            height: 600px;
+            background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url("https://picsum.photos/seed/jiuhua-banner/1920/600") center/cover no-repeat;
+            border-radius: var(--radius-lg);
+            margin: 20px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: var(--white);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .banner-content {
+            z-index: 2;
+            padding: 0 20px;
+        }
+
+        .banner-title {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .banner-desc {
+            font-size: 20px;
+            margin-bottom: 30px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* 产品展示区 */
+        .products {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+        }
+
+        .product-card {
+            background-color: var(--white);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-soft);
+            transition: var(--transition);
+        }
+
+        .product-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .product-img {
+            width: 100%;
+            height: 280px;
+            object-fit: cover;
+            position: relative;
+        }
+
+        /* 产品图片上添加“茶说九华”水印 */
+        .product-img-container {
+            position: relative;
+        }
+
+        .product-img-watermark {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--white);
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+            /* 仿电商平台水印样式 */
+            background: rgba(42, 157, 143, 0.8);
+            padding: 8px 16px;
+            border-radius: var(--radius-base);
+        }
+
+        .product-content {
+            padding: 24px;
+        }
+
+        .product-name {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: var(--text-dark);
+        }
+
+        .product-desc {
+            color: var(--text-gray);
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .product-price {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        /* 关于我们 */
+        .about {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .about-img {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .about-img img {
+            width: 100%;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-soft);
+        }
+
+        .about-content {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .about-title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--text-dark);
+        }
+
+        .about-text {
+            color: var(--text-gray);
+            margin-bottom: 20px;
+            line-height: 1.8;
+        }
+
+        /* 联系我们 */
+        .contact {
+            background-color: var(--white);
+            border-radius: var(--radius-lg);
+            padding: 40px;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .contact-form {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--text-dark);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid #CED4DA;
+            border-radius: var(--radius-base);
+            font-size: 16px;
+            transition: var(--transition);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(42, 157, 143, 0.1);
+        }
+
+        .form-textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        /* 页脚 */
+        .footer {
+            background-color: var(--text-dark);
+            color: var(--white);
+            padding: 60px 0 20px;
+            border-top-left-radius: var(--radius-lg);
+            border-top-right-radius: var(--radius-lg);
+            margin-top: 80px;
+        }
+
+        .footer-top {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-col {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .footer-col-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--secondary);
+        }
+
+        .footer-link {
+            display: block;
+            color: #ADB5BD;
+            text-decoration: none;
+            margin-bottom: 12px;
+            transition: var(--transition);
+        }
+
+        .footer-link:hover {
+            color: var(--secondary);
+            transform: translateX(4px);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #ADB5BD;
+            font-size: 14px;
+        }
+
+        /* 移动端适配 */
+        @media (max-width: 768px) {
+            .nav-menu {
+                gap: 20px;
+            }
+
+            .banner {
+                height: 400px;
+            }
+
+            .banner-title {
+                font-size: 32px;
+            }
+
+            .banner-desc {
+                font-size: 16px;
+            }
+
+            .section-title {
+                font-size: 28px;
+            }
+
+            .product-card {
+                margin-bottom: 20px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .nav {
+                flex-direction: column;
+                height: auto;
+                padding: 20px 0;
+            }
+
+            .nav-menu {
+                margin-top: 20px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .banner {
+                height: 300px;
+            }
+
+            .banner-title {
+                font-size: 24px;
+            }
+
+            .section {
+                padding: 40px 0;
+            }
+
+            .contact {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 头部导航 -->
+    <header class="header">
+        <div class="container">
+            <nav class="nav">
+                <div class="logo">
+                    <img src="https://picsum.photos/seed/jiuhua-logo/100/100" alt="茶说九华logo">
+                    <div class="logo-text">茶说九华</div>
+                </div>
+                <div class="nav-menu">
+                    <a href="#home" class="nav-link">首页</a>
+                    <a href="#products" class="nav-link">产品中心</a>
+                    <a href="#about" class="nav-link">关于我们</a>
+                    <a href="#contact" class="nav-link">联系我们</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 轮播图/首屏 -->
+    <section id="home" class="container">
+        <div class="banner">
+            <div class="banner-content">
+                <h1 class="banner-title">茶说九华 · 九华山黄精茶</h1>
+                <p class="banner-desc">源自九华山核心产区，匠心精制，每一口都是自然的馈赠</p>
+                <a href="#products" class="btn btn-primary">立即选购</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 产品展示区 -->
+    <section id="products" class="section">
+        <div class="container">
+            <h2 class="section-title">九华山黄精系列</h2>
+            <div class="products">
+                <!-- 黄精茶产品卡片 -->
+                <div class="product-card">
+                    <div class="product-img-container">
+                        <img src="https://picsum.photos/seed/huangjing-tea/800/600" alt="九华山黄精茶" class="product-img">
+                        <div class="product-img-watermark">茶说九华</div>
+                    </div>
+                    <div class="product-content">
+                        <h3 class="product-name">九华山黄精茶</h3>
+                        <p class="product-desc">精选九华山5年生黄精，经九蒸九晒工艺精制，茶汤金黄透亮，口感醇厚，富含多种营养成分。</p>
+                        <div class="product-price">¥1980/盒</div>
+                        <button class="btn">立即购买</button>
+                    </div>
+                </div>
+
+                <!-- 黄精果产品卡片 -->
+                <div class="product-card">
+                    <div class="product-img-container">
+                        <img src="https://picsum.photos/seed/huangjing-fruit/800/600" alt="九华山黄精果" class="product-img">
+                        <div class="product-img-watermark">茶说九华</div>
+                    </div>
+                    <div class="product-content">
+                        <h3 class="product-name">九华山黄精果</h3>
+                        <p class="product-desc">即食型黄精果，软糯香甜，保留黄精原有营养，便携易食，是日常养生的不二之选。</p>
+                        <div class="product-price">¥198/盒</div>
+                        <button class="btn">立即购买</button>
+                    </div>
+                </div>
+
+                <!-- 黄精芝麻丸产品卡片 -->
+                <div class="product-card">
+                    <div class="product-img-container">
+                        <img src="https://picsum.photos/seed/huangjing-pill/800/600" alt="九华山黄精芝麻丸" class="product-img">
+                        <div class="product-img-watermark">茶说九华</div>
+                    </div>
+                    <div class="product-content">
+                        <h3 class="product-name">九华山黄精芝麻丸</h3>
+                        <p class="product-desc">黄精与黑芝麻黄金配比，手工制丸，口感绵密，乌黑亮泽，传统养生配方升级。</p>
+                        <div class="product-price">¥198/盒</div>
+                        <button class="btn">立即购买</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 关于我们 -->
+    <section id="about" class="section" style="background-color: var(--white); border-radius: var(--radius-lg); margin: 0 20px;">
+        <div class="container">
+            <h2 class="section-title">关于茶说九华</h2>
+            <div class="about">
+                <div class="about-img">
+                    <img src="https://picsum.photos/seed/jiuhua-about/800/600" alt="九华山产地">
+                </div>
+                <div class="about-content">
+                    <h3 class="about-title">源自九华山，匠心做好茶</h3>
+                    <p class="about-text">茶说九华品牌扎根九华山脚下，深耕黄精产业十余年，专注于九华山黄精的种植、研发与加工。我们坚持原产地直采，严格把控每一道生产工序，从选料到成品，全程无添加，确保产品的天然与纯正。</p>
+                    <p class="about-text">九华山作为中国四大佛教名山之一，独特的地理气候和土壤条件，孕育出的黄精品质远超普通产区。我们秉承“自然、健康、匠心”的理念，将传统工艺与现代技术结合，让更多人品尝到九华山黄精的独特风味。</p>
+                    <a href="#contact" class="btn btn-primary">联系我们</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 联系我们 -->
+    <section id="contact" class="section">
+        <div class="container">
+            <h2 class="section-title">联系我们</h2>
+            <div class="contact">
+                <form class="contact-form" id="contactForm">
+                    <div class="form-group">
+                        <label for="name" class="form-label">姓名</label>
+                        <input type="text" id="name" class="form-input" placeholder="请输入您的姓名" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone" class="form-label">电话</label>
+                        <input type="tel" id="phone" class="form-input" placeholder="请输入您的手机号" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message" class="form-label">留言内容</label>
+                        <textarea id="message" class="form-input form-textarea" placeholder="请输入您想咨询的内容" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">提交留言</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-top">
+                <div class="footer-col">
+                    <h3 class="footer-col-title">产品中心</h3>
+                    <a href="#products" class="footer-link">黄精茶</a>
+                    <a href="#products" class="footer-link">黄精果</a>
+                    <a href="#products" class="footer-link">黄精芝麻丸</a>
+                </div>
+                <div class="footer-col">
+                    <h3 class="footer-col-title">关于我们</h3>
+                    <a href="#about" class="footer-link">品牌故事</a>
+                    <a href="#about" class="footer-link">九华山产地</a>
+                    <a href="#about" class="footer-link">生产工艺</a>
+                </div>
+                <div class="footer-col">
+                    <h3 class="footer-col-title">联系方式</h3>
+                    <a href="tel:400-123-4567" class="footer-link">400-123-4567</a>
+                    <a href="mailto:contact@chashuojiuhua.com" class="footer-link">contact@chashuojiuhua.com</a>
+                    <a href="#" class="footer-link">安徽省池州市九华山风景区</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2025 茶说九华 版权所有 | 皖ICP备12345678号</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 前端安全&交互脚本 -->
+    <script>
+        // 1. 表单安全校验（防XSS、格式校验）
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault(); // 阻止默认提交
+
+            // 获取表单数据
+            const name = document.getElementById('name').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            const message = document.getElementById('message').value.trim();
+
+            // XSS防护：转义特殊字符
+            const escapeHtml = (str) => {
+                return str.replace(/&/g, '&amp;')
+                          .replace(/</g, '&lt;')
+                          .replace(/>/g, '&gt;')
+                          .replace(/"/g, '&quot;')
+                          .replace(/'/g, '&#039;');
+            };
+
+            // 格式校验
+            const phoneReg = /^1[3-9]\d{9}$/;
+            if (!phoneReg.test(phone)) {
+                alert('请输入有效的手机号！');
+                return;
+            }
+
+            if (name.length < 2 || name.length > 20) {
+                alert('姓名长度需在2-20个字符之间！');
+                return;
+            }
+
+            // 模拟提交成功
+            alert(`留言提交成功！我们将尽快联系您，姓名：${escapeHtml(name)}，电话：${escapeHtml(phone)}`);
+            this.reset(); // 重置表单
+        });
+
+        // 2. 平滑滚动（提升用户体验）
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 100,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // 3. 图片加载失败兜底（提升鲁棒性）
+        document.querySelectorAll('img').forEach(img => {
+            img.addEventListener('error', function() {
+                this.src = 'https://picsum.photos/seed/jiuhua-fallback/800/600'; // 兜底图片
+                this.alt = '茶说九华-产品图片';
+            });
+        });
+    </script>
+</body>
+</html>
